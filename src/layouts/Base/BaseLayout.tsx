@@ -1,12 +1,18 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useLazyAxios } from "../../api/use.axios";
-import { AuthContext } from "../../context/auth";
+import {
+    loginAndSetProfile,
+    logout,
+    useSelectUser,
+} from "../../slices/userSlice";
 
 interface BaseLayoutProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 function BaseLayout({ children }: BaseLayoutProps) {
+    const dispatch = useDispatch();
     const {
         data,
         error,
@@ -15,7 +21,7 @@ function BaseLayout({ children }: BaseLayoutProps) {
     } = useLazyAxios<ProfileApi>({
         url: "/auth/me",
     });
-    const toRefreshProfile = useContext(AuthContext).refresh;
+    const toRefreshProfile = useSelectUser().refresh;
 
     useEffect(() => {
         if (toRefreshProfile) {
@@ -23,27 +29,28 @@ function BaseLayout({ children }: BaseLayoutProps) {
         }
     }, [toRefreshProfile]);
 
+    useEffect(() => {
+        if (loading) return;
+
+        if (data && error === null) {
+            dispatch(
+                loginAndSetProfile({
+                    id: data.id,
+                    email: data.email,
+                    username: data.username,
+                    firstName: data.first_name,
+                    lastName: data.last_name,
+                }),
+            );
+        } else if (error) {
+            dispatch(logout());
+        }
+    }, [data, error, loading]);
+
     return (
-        <AuthContext.Provider
-            value={
-                data && error === null
-                    ? {
-                          refresh: false,
-                          isLoggedIn: true,
-                          id: data.id,
-                          username: data.username,
-                          email: data.email,
-                          firstName: data.first_name,
-                          lastName: data.last_name,
-                      }
-                    : {
-                          refresh: false,
-                          isLoggedIn: false,
-                      }
-            }
-        >
-            <div>{children}</div>
-        </AuthContext.Provider>
+        <main className="h-screen w-screen font-sans">
+            {!loading && children}
+        </main>
     );
 }
 
