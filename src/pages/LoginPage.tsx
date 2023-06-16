@@ -80,6 +80,7 @@ function LoginPage() {
                                 id="username"
                                 value={loginDetails.username}
                                 onChange={handleLoginDetailsChange("username")}
+                                placeholder="Enter your username..."
                             />
                         </FormFieldCtn>
                         <FormFieldCtn>
@@ -89,6 +90,7 @@ function LoginPage() {
                                 type="password"
                                 value={loginDetails.password}
                                 onChange={handleLoginDetailsChange("password")}
+                                placeholder="Enter your password..."
                             />
                         </FormFieldCtn>
                         <Button
