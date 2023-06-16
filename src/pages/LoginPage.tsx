@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLazyAxios } from "../api/use.axios";
 import { loginAndSetProfile, useSelectUser } from "../slices/userSlice";
 import { useNavigate } from "react-router-dom";
-import BaseLayout from "../layouts/Base/BaseLayout";
+import BaseLayout from "../layouts/BaseLayout";
 import TextInput from "../components/TextInput/TextInput";
 import Button from "../components/Button/Button";
 

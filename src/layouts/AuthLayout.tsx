@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelectUser } from "../slices/userSlice";
-import BaseLayout from "./Base/BaseLayout";
+import BaseLayout from "./BaseLayout";
 
 function AuthLayout({ children }: { children: React.ReactNode }) {
     const navigate = useNavigate();

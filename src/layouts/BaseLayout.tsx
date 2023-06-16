@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useLazyAxios } from "../../api/use.axios";
+import { useLazyAxios } from "../api/use.axios";
 import {
     loginAndSetProfile,
     logout,
     useSelectUser,
-} from "../../slices/userSlice";
+} from "../slices/userSlice";
 
 interface BaseLayoutProps {
     children?: React.ReactNode;
