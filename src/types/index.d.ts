@@ -18,3 +18,13 @@ interface Profile {
     firstName: string;
     lastName: string;
 }
+
+interface RootState {
+    user: UserContext;
+}
+
+interface UserContext extends Partial<Profile> {
+    isLoggedIn: boolean;
+    refresh: boolean;
+}
+
