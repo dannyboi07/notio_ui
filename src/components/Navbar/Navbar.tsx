@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLazyAxios } from "../../api/use.axios";
-import { logout } from "../../slices/userSlice";
+import { logout, useSelectUser } from "../../slices/userSlice";
 import Button from "../Button/Button";
 
 function Navbar() {
     const dispatch = useDispatch();
+    const isLoggedIn = useSelectUser().isLoggedIn;
     const {
         data: logoutResponse,
         error: logoutResponseError,
@@ -35,12 +36,14 @@ function Navbar() {
             <p className="text-2xl font-bold">Notio</p>
             <nav></nav>
             <div className="ml-auto">
-                <Button
-                    disabled={logoutResponseLoading}
-                    onClick={logoutRequest}
-                >
-                    Logout
-                </Button>
+                {isLoggedIn && (
+                    <Button
+                        disabled={logoutResponseLoading}
+                        onClick={logoutRequest}
+                    >
+                        Logout
+                    </Button>
+                )}
             </div>
         </div>
     );
