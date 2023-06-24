@@ -21,10 +21,18 @@ interface Profile {
 
 interface RootState {
     user: UserContext;
+    toast: ToastContext;
 }
 
 interface UserContext extends Partial<Profile> {
     isLoggedIn: boolean;
     refresh: boolean;
+}
+
+interface ToastContext {
+    severity: "success" | "info" | "warning" | "error";
+    title: string;
+    message?: string;
+    open: boolean;
 }
 
