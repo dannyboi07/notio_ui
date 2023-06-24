@@ -1,11 +1,12 @@
 import React from "react";
 import AuthLayout from "../layouts/AuthLayout";
+import NavbarLayout from "../layouts/NavbarLayout";
 
 function AllBoardsPage() {
     return (
-        <AuthLayout>
+        <NavbarLayout>
             <h1>All boards page</h1>
-        </AuthLayout>
+        </NavbarLayout>
     );
 }
 

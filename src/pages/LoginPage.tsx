@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLazyAxios } from "../api/use.axios";
 import { loginAndSetProfile, useSelectUser } from "../slices/userSlice";
 import { useNavigate } from "react-router-dom";
-import BaseLayout from "../layouts/BaseLayout";
+import { useDispatch } from "react-redux";
+import { useLazyAxios } from "../api/use.axios";
 import TextInput from "../components/TextInput/TextInput";
 import Button from "../components/Button/Button";
+import NavbarLayout from "../layouts/NavbarLayout";
 
 function FormFieldCtn({ children }: { children: React.ReactNode }) {
     return <div className="flex flex-col gap-y-2">{children}</div>;
@@ -13,6 +14,7 @@ function FormFieldCtn({ children }: { children: React.ReactNode }) {
 function LoginPage() {
     const isUserLoggedIn = useSelectUser().isLoggedIn;
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [loginDetails, setLoginDetails] = useState({
         username: "",
         password: "",
@@ -42,13 +44,15 @@ function LoginPage() {
         if (loginResponseLoading) return;
 
         if (loginResponse && loginResponseError === null) {
-            loginAndSetProfile({
-                id: loginResponse.id,
-                email: loginResponse.email,
-                username: loginResponse.username,
-                firstName: loginResponse.first_name,
-                lastName: loginResponse.last_name,
-            });
+            dispatch(
+                loginAndSetProfile({
+                    id: loginResponse.id,
+                    email: loginResponse.email,
+                    username: loginResponse.username,
+                    firstName: loginResponse.first_name,
+                    lastName: loginResponse.last_name,
+                }),
+            );
         }
     }, [loginResponse, loginResponseError, loginResponseLoading]);
 
@@ -69,13 +73,16 @@ function LoginPage() {
         };
 
     return (
-        <BaseLayout>
+        <NavbarLayout>
             <div className="flex h-full w-full flex-col items-center justify-center gap-y-6">
-                <h2 className="text-2xl">Log in to Notio</h2>
+                <h2 className="text-3xl font-semibold">Log in to Notio</h2>
+                <div className="h-[1px] w-48 bg-black-300" />
                 <div>
                     <form className="flex flex-col gap-y-3">
                         <FormFieldCtn>
-                            <label htmlFor="username">Username</label>
+                            <label htmlFor="username" className="text-sm">
+                                Username
+                            </label>
                             <TextInput
                                 id="username"
                                 value={loginDetails.username}
@@ -84,7 +91,9 @@ function LoginPage() {
                             />
                         </FormFieldCtn>
                         <FormFieldCtn>
-                            <label htmlFor="password">Password</label>
+                            <label htmlFor="password" className="text-sm">
+                                Password
+                            </label>
                             <TextInput
                                 id="password"
                                 type="password"
@@ -103,7 +112,7 @@ function LoginPage() {
                     </form>
                 </div>
             </div>
-        </BaseLayout>
+        </NavbarLayout>
     );
 }
 
