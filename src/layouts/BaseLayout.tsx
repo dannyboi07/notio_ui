@@ -16,6 +16,7 @@ function BaseLayout({ children }: BaseLayoutProps) {
         fetchData: fetchProfile,
     } = useLazyAxios<ProfileApi>({
         url: "/auth/me",
+        useToast: false,
     });
     const toRefreshProfile = useSelectUser().refresh;
 
