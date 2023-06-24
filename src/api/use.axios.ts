@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from "./axios";
+import type { AxiosError } from "axios";
 
 interface baseAxiosProps {
     url: string;
@@ -36,9 +37,9 @@ function useAxios<T>({ url, method = "GET", withCredentials = true, body = {}, h
                 setData(response.data?.data);
                 if (error) setError(null);
 
-            }).catch((error) => {
+            }).catch((error: AxiosError) => {
 
-                setError(error.response.data);
+                setError(error.response?.data as ApiError);
                 if (data) setData(null);
 
             }).finally(() => {
@@ -71,12 +72,12 @@ function useLazyAxios<T>({ url, method = "GET", withCredentials = true, body = {
                 withCredentials
             }).then((response) => {
 
-                setData(response.data?.data);
+                setData(response.data?.data ?? response?.data);
                 if (error) setError(null);
 
-            }).catch((error) => {
+            }).catch((error: AxiosError) => {
 
-                setError(error.response.data);
+                setError(error.response?.data as ApiError);
                 if (data) setData(null);
 
             }).finally(() => {
