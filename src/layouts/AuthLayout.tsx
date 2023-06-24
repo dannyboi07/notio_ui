@@ -15,7 +15,8 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
         }
     }, [isLoggedIn]);
 
-    return <BaseLayout>{isLoggedIn ? children : <></>}</BaseLayout>;
+    // return <BaseLayout>{isLoggedIn ? children : <></>}</BaseLayout>;
+    return <BaseLayout>{children}</BaseLayout>;
 }
 
 export default AuthLayout;
