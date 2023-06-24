@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from "./axios";
 import type { AxiosError } from "axios";
+import { useDispatch } from "react-redux";
+import { setToast } from "../slices/toastSlice";
 
 interface baseAxiosProps {
     url: string;
@@ -9,6 +11,8 @@ interface baseAxiosProps {
     body?: {};
     headers?: {};
     params?: {};
+    useToast?: boolean;
+    useMessageAsTitle?: boolean;
 }
 
 interface useAxiosProps extends baseAxiosProps { }
@@ -16,8 +20,18 @@ interface useAxiosProps extends baseAxiosProps { }
 /**
  * API Hook for Axios, to make API calls in a component that needs data on mount
  */
-function useAxios<T>({ url, method = "GET", withCredentials = true, body = {}, headers = {}, params = {} }: useAxiosProps) {
+function useAxios<T>({
+    url,
+    method = "GET",
+    withCredentials = true,
+    body = {},
+    headers = {},
+    params = {},
+    useToast = true,
+    useMessageAsTitle = true
+}: useAxiosProps) {
 
+    const dispatch = useDispatch();
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<ApiError | null>(null);
@@ -39,8 +53,17 @@ function useAxios<T>({ url, method = "GET", withCredentials = true, body = {}, h
 
             }).catch((error: AxiosError) => {
 
-                setError(error.response?.data as ApiError);
+                const apiError = error.response?.data as ApiError;
+                setError(apiError);
                 if (data) setData(null);
+                if (useToast) dispatch(setToast({
+                    open: true,
+                    severity: "error",
+                    ...(useMessageAsTitle ? { title: apiError?.message } : {
+                        title: apiError?.status ?? "Something went wrong",
+                        message: apiError?.message ?? "Please try again"
+                    })
+                }));
 
             }).finally(() => {
                 setLoading(false);
@@ -55,7 +78,18 @@ function useAxios<T>({ url, method = "GET", withCredentials = true, body = {}, h
  */
 interface useLazyAxiosProps extends baseAxiosProps { }
 
-function useLazyAxios<T>({ url, method = "GET", withCredentials = true, body = {}, headers = {}, params = {} }: useLazyAxiosProps) {
+function useLazyAxios<T>({
+    url,
+    method = "GET",
+    withCredentials = true,
+    body = {},
+    headers = {},
+    params = {},
+    useToast = true,
+    useMessageAsTitle = true
+}: useLazyAxiosProps) {
+
+    const dispatch = useDispatch();
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<ApiError | null>(null);
@@ -77,8 +111,17 @@ function useLazyAxios<T>({ url, method = "GET", withCredentials = true, body = {
 
             }).catch((error: AxiosError) => {
 
-                setError(error.response?.data as ApiError);
+                const apiError = error.response?.data as ApiError;
+                setError(apiError);
                 if (data) setData(null);
+                if (useToast) dispatch(setToast({
+                    open: true,
+                    severity: "error",
+                    ...(useMessageAsTitle ? { title: apiError?.message } : {
+                        title: apiError?.status ?? "Something went wrong",
+                        message: apiError?.message ?? "Please try again"
+                    })
+                }));
 
             }).finally(() => {
                 setLoading(false);
