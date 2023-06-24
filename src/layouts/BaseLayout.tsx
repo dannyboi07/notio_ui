@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLazyAxios } from "../api/use.axios";
-import {
-    loginAndSetProfile,
-    logout,
-    useSelectUser,
-} from "../slices/userSlice";
+import { loginAndSetProfile, logout, useSelectUser } from "../slices/userSlice";
 
 interface BaseLayoutProps {
     children?: React.ReactNode;
@@ -48,9 +44,9 @@ function BaseLayout({ children }: BaseLayoutProps) {
     }, [data, error, loading]);
 
     return (
-        <main className="h-screen w-screen font-sans">
+        <div className="h-screen w-screen font-sans">
             {!loading && children}
-        </main>
+        </div>
     );
 }
 
