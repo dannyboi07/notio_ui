@@ -15,9 +15,9 @@ function Button({
     return (
         <button
             className={[
-                "w-fit rounded-[0.25em] px-3.5 py-2",
-                variant === "contained" && "bg-blue-700",
-                variant === "contained" && "hover:bg-blue-800",
+                "w-fit rounded-[0.15em] px-3 py-1",
+                variant === "contained" && "bg-black-900",
+                variant === "contained" && "hover:bg-black-700",
                 variant === "contained" && "text-white",
                 "transition-colors",
                 "disabled:cursor-not-allowed disabled:opacity-50",
