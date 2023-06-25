@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useLazyAxios } from "../../api/use.axios";
 import { logout, useSelectUser } from "../../slices/userSlice";
 import Button from "../Button/Button";
+import Spinner from "../Spinner/Spinner";
 
 function Navbar() {
     const dispatch = useDispatch();
@@ -41,7 +42,11 @@ function Navbar() {
                         disabled={logoutResponseLoading}
                         onClick={logoutRequest}
                     >
-                        Logout
+                        {logoutResponseLoading ? (
+                            <Spinner variant="secondary" />
+                        ) : (
+                            "Logout"
+                        )}
                     </Button>
                 )}
             </div>

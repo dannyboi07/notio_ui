@@ -6,6 +6,7 @@ import { useLazyAxios } from "../api/use.axios";
 import TextInput from "../components/TextInput/TextInput";
 import Button from "../components/Button/Button";
 import NavbarLayout from "../layouts/NavbarLayout";
+import Spinner from "../components/Spinner/Spinner";
 
 function FormFieldCtn({ children }: { children: React.ReactNode }) {
     return <div className="flex flex-col gap-y-2">{children}</div>;
@@ -107,7 +108,11 @@ function LoginPage() {
                             disabled={loginResponseLoading}
                             onClick={handleLogin}
                         >
-                            {loginResponseLoading ? "Logging in..." : "Log in"}
+                            {loginResponseLoading ? (
+                                <Spinner variant="secondary" />
+                            ) : (
+                                "Log in"
+                            )}
                         </Button>
                     </form>
                 </div>
