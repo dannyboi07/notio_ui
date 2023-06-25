@@ -73,11 +73,11 @@ function useAxios<T>({
     return { data, loading, error };
 }
 
+interface useLazyAxiosProps extends baseAxiosProps { }
+
 /**
  * API Hook for Axios, to make API calls in a component that needs data on demand, whenever it needs it
  */
-interface useLazyAxiosProps extends baseAxiosProps { }
-
 function useLazyAxios<T>({
     url,
     method = "GET",
