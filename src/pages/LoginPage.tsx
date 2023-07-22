@@ -29,6 +29,8 @@ function LoginPage() {
         url: "/auth/login",
         method: "POST",
         body: loginDetails,
+        useMessageAsTitle: true,
+        successToastSeverity: "info",
     });
 
     // Redirect to home page if user is already logged in
@@ -54,6 +56,10 @@ function LoginPage() {
                     lastName: loginResponse.last_name,
                 }),
             );
+            // setToast({
+            //     open: true,
+
+            // })
         }
     }, [loginResponse, loginResponseError, loginResponseLoading]);
 

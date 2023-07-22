@@ -29,8 +29,10 @@ interface UserContext extends Partial<Profile> {
     refresh: boolean;
 }
 
+type ToastSeverity = "success" | "info" | "warning" | "error";
+
 interface ToastContext {
-    severity: "success" | "info" | "warning" | "error";
+    severity: ToastSeverity;
     title: string;
     message?: string;
     open: boolean;

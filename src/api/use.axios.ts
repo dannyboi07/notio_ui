@@ -13,6 +13,8 @@ interface baseAxiosProps {
     params?: {};
     useToast?: boolean;
     useMessageAsTitle?: boolean;
+    successToastSeverity?: "success" | "info";
+    errorToastSeverity?: "error" | "warning";
 }
 
 interface useAxiosProps extends baseAxiosProps { }
@@ -28,7 +30,9 @@ function useAxios<T>({
     headers = {},
     params = {},
     useToast = true,
-    useMessageAsTitle = true
+    useMessageAsTitle = true,
+    successToastSeverity = "success",
+    errorToastSeverity = "error"
 }: useAxiosProps) {
 
     const dispatch = useDispatch();
@@ -50,6 +54,16 @@ function useAxios<T>({
 
                 setData(response.data?.data);
                 if (error) setError(null);
+                if (useToast && response?.data?.message) {
+                    dispatch(setToast({
+                        open: true,
+                        severity: successToastSeverity,
+                        ...(useMessageAsTitle ? { title: response?.data?.message } : {
+                            title: response?.data?.status ?? "Success",
+                            message: response?.data?.message ?? ""
+                        })
+                    }));
+                }
 
             }).catch((error: AxiosError) => {
 
@@ -58,7 +72,7 @@ function useAxios<T>({
                 if (data) setData(null);
                 if (useToast) dispatch(setToast({
                     open: true,
-                    severity: "error",
+                    severity: errorToastSeverity,
                     ...(useMessageAsTitle ? { title: apiError?.message } : {
                         title: apiError?.status ?? "Something went wrong",
                         message: apiError?.message ?? "Please try again"
@@ -86,7 +100,9 @@ function useLazyAxios<T>({
     headers = {},
     params = {},
     useToast = true,
-    useMessageAsTitle = true
+    useMessageAsTitle = true,
+    successToastSeverity = "success",
+    errorToastSeverity = "error"
 }: useLazyAxiosProps) {
 
     const dispatch = useDispatch();
@@ -108,6 +124,16 @@ function useLazyAxios<T>({
 
                 setData(response.data?.data ?? response?.data);
                 if (error) setError(null);
+                if (useToast && response?.data?.message) {
+                    dispatch(setToast({
+                        open: true,
+                        severity: successToastSeverity,
+                        ...(useMessageAsTitle ? { title: response?.data?.message } : {
+                            title: response?.data?.status ?? "Success",
+                            message: response?.data?.message ?? ""
+                        })
+                    }));
+                }
 
             }).catch((error: AxiosError) => {
 
@@ -116,7 +142,7 @@ function useLazyAxios<T>({
                 if (data) setData(null);
                 if (useToast) dispatch(setToast({
                     open: true,
-                    severity: "error",
+                    severity: errorToastSeverity,
                     ...(useMessageAsTitle ? { title: apiError?.message } : {
                         title: apiError?.status ?? "Something went wrong",
                         message: apiError?.message ?? "Please try again"
