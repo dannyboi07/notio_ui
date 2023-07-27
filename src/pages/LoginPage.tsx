@@ -36,7 +36,7 @@ function LoginPage() {
     // Redirect to home page if user is already logged in
     useEffect(() => {
         if (isUserLoggedIn) {
-            navigate("/", {
+            navigate("/boards", {
                 replace: true,
             });
         }
