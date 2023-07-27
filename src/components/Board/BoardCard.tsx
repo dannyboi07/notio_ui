@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface BoardCardProps {
     kanbanBoard: KanbanBoard;
@@ -25,9 +26,9 @@ function BoardCard({
 
     if (wrapInLink) {
         return (
-            <a href={linkToHref} className="h-fit w-fit">
+            <Link to={linkToHref} className="h-fit w-fit">
                 {core}
-            </a>
+            </Link>
         );
     }
     return core;
