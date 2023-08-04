@@ -4,7 +4,12 @@ import { useSelectUser } from "../slices/userSlice";
 import BaseLayout from "./BaseLayout";
 import Spinner from "../components/Spinner/Spinner";
 
-function AuthLayout({ children }: { children: React.ReactNode }) {
+interface AuthLayoutProps {
+    children: React.ReactNode;
+    disableAuthCheck?: boolean;
+}
+
+function AuthLayout({ children, disableAuthCheck = false }: AuthLayoutProps) {
     const navigate = useNavigate();
     const [firstRender, setFirstRender] = useState(true);
     const isLoggedIn = useSelectUser().isLoggedIn;
@@ -15,16 +20,18 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
 
     // skip login validation on first render since we don't have the user data yet
     useEffect(() => {
-        if (!firstRender && !isLoggedIn) {
+        if (disableAuthCheck || firstRender) return;
+
+        if (!isLoggedIn) {
             navigate("/login", {
                 replace: true,
             });
         }
-    }, [isLoggedIn]);
+    }, [disableAuthCheck, firstRender, isLoggedIn]);
 
     return (
         <BaseLayout>
-            {!isLoggedIn ? (
+            {!disableAuthCheck && (firstRender || !isLoggedIn) ? (
                 <div className="flex h-screen w-screen items-center justify-center">
                     <Spinner width="2rem" height="2rem" />
                 </div>
@@ -35,4 +42,5 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
     );
 }
 
+export type { AuthLayoutProps };
 export default AuthLayout;

@@ -80,7 +80,7 @@ function LoginPage() {
         };
 
     return (
-        <NavbarLayout>
+        <NavbarLayout disableAuthCheck>
             <div className="flex h-full w-full flex-col items-center justify-center gap-y-6">
                 <h2 className="text-3xl font-semibold">Log in to Notio</h2>
                 <div className="h-[1px] w-48 bg-black-300" />

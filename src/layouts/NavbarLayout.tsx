@@ -1,10 +1,12 @@
 import React from "react";
-import AuthLayout from "./AuthLayout";
+import AuthLayout, { AuthLayoutProps } from "./AuthLayout";
 import Navbar from "../components/Navbar/Navbar";
 
-function NavbarLayout({ children }: { children: React.ReactNode }) {
+interface NavbarLayoutProps extends AuthLayoutProps {}
+
+function NavbarLayout({ children, ...authLayoutProps }: NavbarLayoutProps) {
     return (
-        <AuthLayout>
+        <AuthLayout {...authLayoutProps}>
             <Navbar />
             <main className="flex h-[calc(100%-48px)] flex-col px-6 py-2">
                 {children}
