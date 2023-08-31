@@ -74,6 +74,38 @@ interface KanbanColumn {
     updatedAt: Date;
 }
 
+interface KanbanCardApi {
+    id: number;
+    column_id: number;
+    title: string;
+    description: string;
+    position: number;
+    created_at: Date;
+    updated_at: Date;
+}
+
+interface KanbanCard {
+    id: number;
+    columnId: number;
+    title: string;
+    description: string;
+    position: number;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+interface KanbanColumnWithCardsApi extends KanbanColumnApi {
+    cards: KanbanCardApi[];
+}
+
+interface KanbanColumnWithCards extends KanbanColumn {
+    cards: KanbanCard[];
+}
+
 interface KanbanBoardWithColumns extends KanbanBoard {
-    columns: KanbanColumn[];
+    columns: KanbanColumnWithCards[];
+}
+
+interface KanbanBoardWithColumnsAndCardsApi extends KanbanBoardApi {
+    columns: KanbanColumnWithCardsApi[];
 }
