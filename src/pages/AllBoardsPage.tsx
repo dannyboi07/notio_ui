@@ -3,7 +3,7 @@ import NavbarLayout from "../layouts/NavbarLayout";
 import { useLazyAxios } from "../api/use.axios";
 import Spinner from "../components/Spinner/Spinner";
 import Button from "../components/Button/Button";
-import BoardCard from "../components/Board/BoardCard";
+import BoardCard from "../components/Kanban/BoardCard";
 
 function AllBoardsPage() {
     const {

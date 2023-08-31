@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 interface BoardCardProps {
@@ -16,7 +15,11 @@ function BoardCard({
 }: BoardCardProps) {
     const core = (
         <div
-            className={`flex h-fit min-h-[100px] w-fit min-w-[300px] flex-col gap-y-1 rounded-md border border-black-300 px-3 py-1.5 transition-colors hover:bg-slate-100 ${wrapperClassName}`}
+            className={`flex h-fit min-h-[100px] 
+                w-fit min-w-[300px] flex-col gap-y-1 
+                rounded-md border border-black-300 
+                px-3 py-1.5 transition-colors 
+                hover:bg-slate-100 ${wrapperClassName}`}
         >
             <h3 className="font-bold">{kanbanBoard.title}</h3>
             <span className="h-[1px] w-[90%] self-center bg-black-300" />
