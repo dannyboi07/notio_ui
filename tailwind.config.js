@@ -13,6 +13,8 @@ export default {
                     400: colors.stone[400],
                     // Ex. Login email field's bg colour
                     300: colors.stone[300],
+                    200: colors.stone[200],
+                    100: colors.stone[100],
                 },
                 blue: {
                     100: "#caf0f8",
