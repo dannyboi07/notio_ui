@@ -11,6 +11,12 @@ function BoardPage() {
     const boardApi = useLazyAxios<KanbanBoardWithColumnsAndCardsApi>({
         url: `/kanban/${boardId}`,
     });
+    const updateBoardApi = useLazyAxios<KanbanBoardApi>({
+        url: `/kanban/${boardId}`,
+        method: "PUT",
+        body: board ? board : undefined,
+    });
+    const [shouldUpdateBoard, setShouldUpdateBoard] = useState<boolean>(false);
 
     useEffect(() => {
         boardApi.fetchData();
@@ -50,7 +56,14 @@ function BoardPage() {
         }
     }, [boardApi.loading]);
 
-    if (boardApi.loading)
+    useEffect(() => {
+        if (shouldUpdateBoard) {
+            handleBoardUpdate();
+            setShouldUpdateBoard(false);
+        }
+    }, [shouldUpdateBoard]);
+
+    if (boardApi.loading) {
         return (
             <NavbarLayout>
                 <div className="flex h-full w-full items-center justify-center">
@@ -58,12 +71,51 @@ function BoardPage() {
                 </div>
             </NavbarLayout>
         );
+    }
+
+    const handleBoardTextChange =
+        (fieldName: "title" | "description") =>
+        (event: React.FocusEvent<HTMLHeadElement | HTMLParagraphElement>) => {
+            if (board === null) return;
+
+            setBoard({
+                ...board,
+                [fieldName]: event.target.textContent,
+            });
+
+            if (!shouldUpdateBoard) setShouldUpdateBoard(true);
+        };
+
+    function handleBoardUpdate() {
+        if (boardApi.loading || updateBoardApi.loading || board === null)
+            return;
+
+        if (
+            board.title === updateBoardApi.data?.title &&
+            board.description === updateBoardApi.data?.description
+        )
+            return;
+
+        updateBoardApi.fetchData();
+    }
 
     return (
         <NavbarLayout>
             <div className="flex flex-col gap-y-2 py-8">
-                <h2 className="text-4xl font-bold">{board?.title}</h2>
-                <p className="text-lg">{board?.description}</p>
+                <h2
+                    className="max-w-fit text-4xl font-bold"
+                    contentEditable
+                    onBlur={handleBoardTextChange("title")}
+                >
+                    {board?.title}
+                </h2>
+                <p
+                    className="max-w-fit text-lg"
+                    contentEditable
+                    onBlur={handleBoardTextChange("description")}
+                >
+                    {board?.description}
+                </p>
                 <div
                     className={`relative flex gap-x-10 px-8 py-4 before:absolute 
                         before:left-[50%] before:top-0 
