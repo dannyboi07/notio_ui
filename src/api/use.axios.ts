@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axiosInstance from "./axios";
 import type { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
@@ -109,8 +109,12 @@ function useLazyAxios<T>({
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<ApiError | null>(null);
+    const abortControllerRef = useRef<AbortController | null>(null);
 
     function fetchData() {
+        if (abortControllerRef.current) abortControllerRef.current.abort();
+        abortControllerRef.current = new AbortController();
+
         setLoading(true);
         axiosInstance
             .request({
@@ -119,7 +123,8 @@ function useLazyAxios<T>({
                 data: body,
                 headers,
                 params,
-                withCredentials
+                withCredentials,
+                signal: abortControllerRef.current.signal
             }).then((response) => {
 
                 setData(response.data?.data ?? response?.data);
@@ -151,8 +156,17 @@ function useLazyAxios<T>({
 
             }).finally(() => {
                 setLoading(false);
+
+                // Reset abort controller
+                abortControllerRef.current = null;
             });
     }
+
+    useEffect(() => {
+        return () => {
+            if (abortControllerRef.current) abortControllerRef.current.abort();
+        };
+    }, []);
 
     return { data, loading, error, fetchData };
 }
