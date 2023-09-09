@@ -7,7 +7,7 @@ interface Props {
 
 function KanbanColumn({ column }: Props) {
     return (
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 bg-white">
             <div>
                 <h3 className="text-lg font-bold">{column.title}</h3>
                 <p>{column.description}</p>

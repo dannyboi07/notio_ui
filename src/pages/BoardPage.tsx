@@ -4,6 +4,11 @@ import { useLazyAxios } from "../api/use.axios";
 import NavbarLayout from "../layouts/NavbarLayout";
 import Spinner from "../components/Spinner/Spinner";
 import KanbanColumn from "../components/Kanban/KanbanColumn";
+import Sortable, {
+    DragEndEvent,
+    onDragEndHelper,
+} from "../components/DragNDrop/Sortable/Sortable";
+import SortableItem from "../components/DragNDrop/Sortable/SortableItem";
 
 function BoardPage() {
     const { boardId } = useParams();
@@ -99,6 +104,15 @@ function BoardPage() {
         updateBoardApi.fetchData();
     }
 
+    function onColumnDragEnd(e: DragEndEvent) {
+        if (board === null) return;
+
+        setBoard({
+            ...board,
+            columns: onDragEndHelper(e, board.columns),
+        });
+    }
+
     return (
         <NavbarLayout>
             <div className="flex flex-col gap-y-2 py-8">
@@ -122,9 +136,16 @@ function BoardPage() {
                         before:block before:h-[1px] 
                         before:w-5/6 before:translate-x-[-50%] before:bg-black-300`}
                 >
-                    {board?.columns.map((column) => (
-                        <KanbanColumn key={column.id} column={column} />
-                    ))}
+                    <Sortable
+                        items={board?.columns || []}
+                        onDragEnd={onColumnDragEnd}
+                    >
+                        {board?.columns.map((column) => (
+                            <SortableItem id={column.id}>
+                                <KanbanColumn key={column.id} column={column} />
+                            </SortableItem>
+                        ))}
+                    </Sortable>
                 </div>
             </div>
         </NavbarLayout>
